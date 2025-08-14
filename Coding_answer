@@ -45,6 +45,15 @@ Stack<T> operator-() const {
 .count(key) → simplest way to check if key exists (returns 0 or 1 in sets/maps)
 
 .find(key) → gives iterator to the key (useful if you want to read or modify the value)
+#include <algorithm>
+#include <vector>
+
+std::vector<int> v = {1,2,3,4};
+
+auto it = std::find(v.begin(), v.end(), 3); // std::find from <algorithm>
+if (it != v.end()) {
+    // found 3
+}
 
 
 
