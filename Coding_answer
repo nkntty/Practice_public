@@ -1,0 +1,13 @@
+//Question5//
+// 単一オブジェクトの場合
+int* ptr = new int(42);        // メモリ確保
+delete ptr;                    // メモリ解放
+ptr = nullptr;                // 安全のためnullポインタに
+
+// 配列の場合
+int* arr = new int[100];      // 配列のメモリ確保
+delete[] arr;                 // 配列のメモリ解放
+arr = nullptr;               // 安全のためnullポインタに
+
+
+Question
