@@ -223,3 +223,33 @@ int countUnique(const std::vector<int>& vec) {
 }
 
 
+
+
+
+
+
+
+
+
+//Question10//
+int height(Node* root){
+    if(!root){return 0;}
+     int leftHeight=height(root->left);
+     int rightHeight=height(root->right);
+    return 1+max(leftHeight, rightHeight);
+  }
+
+bool Equal(Node* root){
+    if(!root) return true;
+
+    // recursively check left and right subtrees
+    if(!Equal(root->left) || !Equal(root->right))
+        return false;
+
+    // check current node
+    return root->val == height(root);
+}
+
+
+
+
