@@ -10,4 +10,5 @@ delete[] arr;                 // 配列のメモリ解放
 arr = nullptr;               // 安全のためnullポインタに
 
 
-Question
+//Question6//
+(ptr + 1)->callMe();
