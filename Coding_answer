@@ -160,3 +160,57 @@ Stack<T> operator-(const Stack<T>& s) {
     }
     return reversed;
 }
+
+
+
+
+
+//Question8//
+Definitions
+"UNIQUE" element usually means occurs exactly once in the vector.
+
+Duplicate element is anything that occurs more than once.
+
+
+#include <vector>
+#include <unordered_set>
+
+int countUnique(const std::vector<int>& vec) {
+    std::unordered_set<int> seen;
+    std::unordered_set<int> duplicates;
+
+    for (const int& x : vec) {
+        if (seen.count(x)) {
+            duplicates.insert(x);  // already seen, mark as duplicate
+        } else {
+            seen.insert(x);        // first time seeing x
+        }
+    }
+
+    return seen.size() - duplicates.size(); // remove duplicates
+}
+
+別解
+
+
+#include <vector>
+#include <unordered_map>
+
+int countUnique(const std::vector<int>& vec) {
+    std::unordered_map<int, int> counts;
+
+    // Count occurrences of each element
+    for (int x : vec) {
+        counts[x]++;
+    }
+
+    // Count how many elements appear exactly once
+    int uniqueCount = 0;
+    for (auto& [key, val] : counts) {
+        if (val == 1) uniqueCount++;
+    }
+
+    return uniqueCount;
+}
+
+
