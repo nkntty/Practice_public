@@ -34,17 +34,17 @@ Stack<T> operator-() const {
     Stack<T> reversed;
     std::stack<T> temp = stk; // copy of the member
     while (!temp.empty()) {
-        reversed.stk.push(temp.top());
+        reversed.stk.push(temp.top()); 
         temp.pop();
     }
     return reversed; // <-- returning the whole Stack<T> object
 }
 
+✅ Summary:
 
+.count(key) → simplest way to check if key exists (returns 0 or 1 in sets/maps)
 
-
-
-
+.find(key) → gives iterator to the key (useful if you want to read or modify the value)
 
 
 
