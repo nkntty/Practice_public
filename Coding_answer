@@ -12,3 +12,151 @@ arr = nullptr;               // 安全のためnullポインタに
 
 //Question6//
 (ptr + 1)->callMe();
+
+
+
+//Question7// 
+
+Stack<T>& operator-() {
+    std::stack<T> temp;
+    while (!stk.empty()) {
+        temp.push(stk.top());
+        stk.pop();
+    }
+    stk.swap(temp); // replace with reversed.   stk=temp; is fine too. BUT, stk.swap(temp)	O(1)	Fast pointer swap, no element copies
+
+    return *this;   // return reference to self
+}
+
+
+
+Stack<T> operator-() const {
+    Stack<T> reversed;
+    std::stack<T> temp = stk; // copy of the member
+    while (!temp.empty()) {
+        reversed.stk.push(temp.top());
+        temp.pop();
+    }
+    return reversed; // <-- returning the whole Stack<T> object
+}
+
+
+
+
+
+
+
+
+
+
+Alright — if we assume your stack class from the webinar is something like:
+
+template <typename T>
+class Stack {
+public:
+    void push(const T& value);
+    T pop();
+    bool empty() const;
+    // other member functions...
+private:
+    std::vector<T> elements; // or some container holding the stack data
+};
+
+
+You can overload the unary minus (operator-) as a member function to return a reversed stack like this:
+
+template <typename T>
+Stack<T> Stack<T>::operator-() const {
+    Stack<T> reversed;
+    for (auto it = elements.rbegin(); it != elements.rend(); ++it) {
+        reversed.push(*it);
+    }
+    return reversed;
+}
+
+
+
+
+
+
+
+How this works:
+
+operator-() is const because reversing doesn’t modify the original stack.
+
+We create a new Stack<T> called reversed.
+
+We iterate over elements in reverse order (using rbegin()/rend()).
+
+We push each element into reversed.
+
+Return the reversed stack.
+
+If your original webinar stack didn’t use std::vector but instead stored elements differently (like a linked list or manual array), the core idea is the same: iterate from top to bottom and push into a new stack.
+
+Do you want me to also show a non-member operator- version that works even if you can’t modify the stack class? That’s sometimes cleaner for symmetry.
+
+
+
+
+
+Yeah, I see what you mean — your current code has a couple of problems:
+
+Signature – You wrote
+
+Stack<T> operator-(const Stack<T>& other)
+
+
+
+
+
+That’s a binary minus operator (takes a parameter) instead of the unary one (operator-() with no parameters).
+The “negation” operator you described should be unary.
+
+Modifying the other stack – You’re popping from other, which is const in your function signature. This is not allowed, and even if it compiled (by removing const), it would be bad practice because you’d destroy the passed stack.
+
+Return value – You’re doing return *this; but this is a free function (not a member), so *this isn’t defined here unless you wrote it as a member method.
+
+Logic bug – for (!other.stk.empty()) isn’t valid syntax for a loop condition — that’s just a boolean expression, not a loop structure.
+
+Here’s the correct unary member overload that returns a reversed stack without mutating the original:
+
+template <typename T>
+class Stack {
+public:
+    Stack<T> operator-() const {
+        Stack<T> reversed;
+        std::stack<T> temp = stk; // make a copy so we can pop safely
+        while (!temp.empty()) {
+            reversed.stk.push(temp.top());
+            temp.pop();
+        }
+        return reversed;
+    }
+
+private:
+    std::stack<T> stk; // your underlying storage
+};
+
+Why this works:
+
+No parameters → unary -.
+
+const → we guarantee the original isn’t modified.
+
+We copy stk into temp so we can pop elements without touching the original.
+
+We push them into reversed to get the reverse order.
+
+If your intention was to write it outside the class (non-member), it would look like this:
+
+template <typename T>
+Stack<T> operator-(const Stack<T>& s) {
+    Stack<T> reversed;
+    std::stack<T> temp = s.stk; // copy
+    while (!temp.empty()) {
+        reversed.stk.push(temp.top());
+        temp.pop();
+    }
+    return reversed;
+}
