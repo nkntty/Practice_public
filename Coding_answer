@@ -293,3 +293,64 @@ bool Equal(Node* root){
 
 
 
+別解
+#include <iostream>
+#include <algorithm> // for std::max
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+
+    Node(int value) : val(value), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+public:
+    Node* root;
+
+    BinaryTree() : root(nullptr) {}
+
+    // Public function
+    bool is_height_tree() {
+        bool isValid = true;
+        checkHeightTree(root, isValid);
+        return isValid;
+    }
+
+private:
+    // Helper function: returns height and validates node values
+    int checkHeightTree(Node* node, bool& isValid) {
+        if (!node) return 0;
+
+        int leftHeight = checkHeightTree(node->left, isValid);
+        int rightHeight = checkHeightTree(node->right, isValid);
+
+        int currentHeight = 1 + max(leftHeight, rightHeight);
+
+        if (node->val != currentHeight) {
+            isValid = false;
+        }
+
+        return currentHeight;
+    }
+};
+
+int main() {
+    // Example: construct a tree
+    BinaryTree tree;
+    tree.root = new Node(3);
+    tree.root->left = new Node(2);
+    tree.root->right = new Node(1);
+    tree.root->left->left = new Node(1);
+
+    cout << (tree.is_height_tree() ? "True" : "False") << endl;
+
+    return 0;
+}
+
+
+
+
+
