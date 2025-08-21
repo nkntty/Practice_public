@@ -354,3 +354,56 @@ int main() {
 
 
 
+
+
+
+
+//Question11//
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+vector<int> strangeSort(const vector<int>& nums) {
+    vector<int> evens;
+    vector<int> odds;
+
+    for (int num : nums) {
+        if (num % 2 == 0)
+            evens.push_back(num);
+        else
+            odds.push_back(num);
+    }
+
+    // Reverse odds
+    reverse(odds.begin(), odds.end());
+
+    // Combine evens and reversed odds
+    evens.insert(evens.end(), odds.begin(), odds.end());
+
+    return evens;
+}
+
+int main() {
+    vector<int> nums = {5, 2, 8, 3, 7, 4};
+    vector<int> result = strangeSort(nums);
+
+    for (int x : result)
+        cout << x << " ";
+    cout << endl;
+
+    return 0;
+}
+
+✅ vector::insert in C++
+
+The insert function in a std::vector allows you to add elements at a specific position.
+
+Syntax:
+vector.insert(position, value);                      // Insert single element
+vector.insert(position, count, value);              // Insert multiple copies
+vector.insert(position, first_iterator, last_iterator); // Insert a range
+
+
+
