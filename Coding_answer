@@ -15,7 +15,7 @@ arr = nullptr;               // 安全のためnullポインタに
 
 
 
-//Question7// 
+❌//Question7// 
 
 Stack<T>& operator-() {
     std::stack<T> temp;
